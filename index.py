@@ -21,8 +21,8 @@ app.layout = html.Div([
     #     dcc.Link('Prediction', href='/prediction')
     # ], className="row"),
     #container where other pages will be rendered
-    html.Div(id='page-container', children=[])
-])
+    html.Div(id='page-container', children=[], className="bgImg")
+], className="main-container")
 
 @app.callback(
     Output('page-container', 'children'),

@@ -14,14 +14,14 @@ layout = html.Div([
                    'tool designed to evaluate and monitor the overall health '
                    'and quality of freshwater ecosystems such as lakes, rivers, '
                    'and streams. This application utilizes various data sources, '
-                   'including water quality ', style={'color': 'white'}),
+                   'including water quality ', className="hero-desc", style={'color': 'white'}),
             html.Div([
-                dcc.Link('View Dashboard', href='/dashboard', className='sBtn secondaryBtn'),
+                dcc.Link('View Dashboard', href='/dashboard', className='sBtn secondaryBtn', style={'margin-left': '10px'}),
 
                 dcc.Link('Predict Now', href='/prediction', className='sBtn primaryBtn', style={'margin-left': '30px'})
             ], className="row", style={'margin-top': '30px'})
-        ],className="container"),
+        ],className="col-6"),
 
-        html.Div(className="container")
+        html.Div(className="col-6")
     ], className="row")
-], className="container")
+], className="container homePage")
