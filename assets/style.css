@@ -56,8 +56,8 @@ body {
 
 .sBtn {
   width: 150px;
-  height: 34px;
-
+  height: 38px;
+cursor: pointer;
    text-align: center;
   line-height: 34px;
  display: inline-block;

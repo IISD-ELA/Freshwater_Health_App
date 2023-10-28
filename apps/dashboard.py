@@ -7,15 +7,56 @@ from dash.dependencies import Input, Output
 import plotly.express as px
 import plotly.graph_objs as go_obj
 import plotly.graph_objects as go
+from visuals import charts
+
 
 
 from app import app
 df = px.data
 #print(df)
 
-fig2 = go.Figure(
-    data = [go.Bar(x=[1,4,3,2,5,6,3], y=[3,5,6,7,6,8,1])],
+fig1 = go.Figure(
+    data = [go.Bar(x=[1,4,3,2,5,6,3,5,6,7], y=[3,5,6,7,6,8,1,5,6,8])],
     layout= go.Layout(
+        title= {
+            'text': "Histogram Distribution Plot",
+            'x': 0.3,
+            'y': 0.95,
+            'xanchor': 'center',
+            'yanchor': 'top'
+            },
+        titlefont={
+            'color':'#54643e',
+            'size': 18
+        },
+        legend = {
+            'orientation': 'h',
+            'bgcolor': '#54f43e',
+            'xanchor': 'center', 'x': 0.5, 'y':-0.07
+        },
+        font= dict(
+            family="sans-serif",
+            size=12,
+            color='white'
+        ),
+        height=350,
+        width=525,
+        plot_bgcolor="#FFFFFF",
+        paper_bgcolor="#ffffff",
+        hovermode="closest",
+        margin=go.layout.Margin(l=15, r=15, b=15, t=15, pad=4),
+
+
+    )
+
+)
+
+
+
+fig2 = go.Figure(
+    data = [go.Histogram(x=[5,4,3,2,5,6,3,5,3,4], y=[3,5,6,7,6,3,6,4,3,5])],
+    layout= go.Layout(
+        barmode='stack',
         title= {
             'text': "A sample go Plot",
             'x': 0.3,
@@ -38,7 +79,7 @@ fig2 = go.Figure(
             color='white'
         ),
             height=350,
-            width=350,
+            width=325,
             plot_bgcolor="#1A2E62",
             paper_bgcolor="#1A2E62",
             hovermode="closest",
@@ -108,7 +149,8 @@ layout = html.Div([
             dbc.Button("Load CSV", style={'margin-left': '10px'})
         ], className="col-9 flex-display" ),
 
-    ], className="row", style={'margin': '20px 22px 10px 22px', 'border': '1px solid white', 'border-radius': '5px', 'padding': '15px'}),
+    ], className="row", style={'margin': '20px 22px 10px 22px', 'border': '1px solid white',
+                               'border-radius': '5px', 'padding': '15px'}),
 
     #row 4
     html.Div([
@@ -126,22 +168,22 @@ layout = html.Div([
                #               options=['total_bill', 'tip', 'size'],
                #               value='total_bill', clearable=False
                #               ),
-                dcc.Graph(id="graph1", figure=fig2),
+                dcc.Graph(id="graph1", figure=charts.createGoPieChart()),
 
-            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content':'center'}),
+            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center'}),
         ], className="col-4"),
         html.Div([
         #box 1
             html.Div([
               # html.P("Chart Title 1"),
                 dcc.Graph(id="graph2", figure=fig2),
-            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content':'center'}),
+            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center'}),
         ], className="col-4"),
         html.Div([
         #box 1
             html.Div([
                #html.P("Chart Title 1"),
-                dcc.Graph(id="graph3", figure=fig2),
+                dcc.Graph(id="graph3", figure=charts.createGoHistogramChart()),
             ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center'}),
         ], className="col-4"),
 
@@ -153,7 +195,7 @@ layout = html.Div([
             #box 1
             html.Div([
                #html.P("Chart Title 5"),
-                dcc.Graph(id="graph5", figure=fig3),
+                dcc.Graph(id="graph5", figure=charts.createGOScatterPlot()),
             ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center', 'background-color': 'white'}),
         ], className="col-8"),
 
@@ -172,23 +214,79 @@ layout = html.Div([
         html.Div([
             # box 1
             html.Div([
-                html.P("Chart Title 7"),
-                #dcc.Graph(id="graph7"),
-            ], className="card_container"),
+                dcc.Graph(id="graph7", figure=charts.createGoViolinPlot()),
+            ], className="card_container", style={'backgroundColor': '#ffffff'}),
         ], className="col-6"),
 
         html.Div([
             # box 2
             html.Div([
                 html.P("Chart Title 8"),
-                #dcc.Graph(id="graph8"),
-            ], className="card_container"),
+                dcc.Graph(id="graph8", figure=fig1),
+            ], className="card_container", style={'backgroundColor': '#ffffff'}),
 
         ], className="col-6"),
     ], className="row"),
 
 
+    html.Div([
+        html.Div([
+            # box 2
+            html.Div([
+                html.Div([
+                    html.Div([
+                        html.P("*** Advance Exploratory Analysis ***"),
+                        html.Div(id='advAnalysisBtn', children='Generate Analysis', className='sBtn primaryBtn',
+                             style={'margin-left': '30px'})
+                    ], className="col-12 flex-display", style={'justify-content': 'space-between'}),
 
+                ], className="row "),
+
+                 #Advance chart
+                    #chats here
+
+                    # row 5
+                    html.Div([
+                        html.Div([
+                            # box 1
+                            html.Div([
+                                #html.P("Chart Title 7"),
+                                dcc.Graph(id="graph7", figure=charts.createGOLinePlot()),
+                            ], className="card_container", style={'backgroundColor': '#ffffff'}),
+                        ], className="col-6", ),
+
+                        html.Div([
+                            # box 2
+                            html.Div([
+                                html.P("Chart Title 8"),
+                                dcc.Graph(id="graph8", figure=charts.createGoBoxPlot()),
+                            ], className="card_container", style={'backgroundColor': '#ffffff'}),
+
+                        ], className="col-6"),
+                    ], className="row"),
+
+                    #row 2 advance char
+                    html.Div([
+                        html.Div([
+                            # box 2
+                            html.Div([
+                                html.P("Chart Title 8"),
+                                dcc.Graph(id="graph8", figure=fig3),
+                            ], className="card_container", style={'align-items': 'center', 'justify-content': 'center', 'background-color': 'white'}),
+
+                        ], className="col-12"),
+
+
+                    ], className="row")
+
+
+            ], className="card_container"),
+
+        ], className="col-12", style={'margin-top': '20px'}),
+
+
+
+    ], className="row"),
 
 ], className="dashboardPage")
 
