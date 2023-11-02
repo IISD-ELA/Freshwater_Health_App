@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 
 
 #********************************** Plotly GO Bar Plot **********************************#
-def createGoBarChart(x_data,y_data, title, title_x_position, title_y_position, title_font_color, title_font_size,
+def createGoParamBarChart(x_data,y_data, title, title_x_position, title_y_position, title_font_color, title_font_size,
                    legend_bg_color, legend_position, legend_x_axis, legend_y_axis, font_color, chart_height,
                    chart_width, plot_bg_color, paper_bg_color,
                    ml, mr, mb, mt, padding
@@ -53,16 +53,62 @@ def createGoBarChart(x_data,y_data, title, title_x_position, title_y_position, t
     return fig
 
 
-#********************************** Plotly GO Pie Chart **********************************#
-def createGoPieChart():
-    labels = ['Oxygen', 'Hydrogen', 'Carbon_Dioxide', 'Nitrogen']
-    values = [4500, 2500, 1053, 500]
-    colors = ['gold', 'mediumturquoise', 'darkorange', 'lightgreen']
 
-    fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=0, pull=[0, 0, 0.2, 0])],
+
+
+#********************************** Plotly GO Bar Plot **********************************#
+def createGoPlainBarChart(x_data,y_data, title):
+    fig = go.Figure(
+        data=[go.Bar(x=x_data, y=y_data)],
+        layout=go.Layout(
+            title={
+                'text': title,
+                'x': 0.3,
+                'y': 0.95,
+                'xanchor': 'center',
+                'yanchor': 'top'
+            },
+            titlefont={
+                'color': '#54643e',
+                'size': 18
+            },
+            legend={
+                'orientation': 'h',
+                'bgcolor': '#54f43e',
+                'xanchor': 'center', 'x': 0.5, 'y': -0.07
+            },
+            font=dict(
+                family="sans-serif",
+                size=12,
+                color='white'
+            ),
+            height=350,
+            width=525,
+            plot_bgcolor="#FFFFFF",
+            paper_bgcolor="#ffffff",
+            hovermode="closest",
+            margin=go.layout.Margin(l=15, r=15, b=15, t=15, pad=4),
+
+        )
+
+    )
+    return fig
+
+
+
+
+
+#********************************** Plotly GO Pie Chart **********************************#
+def createGoPieChart(values, labels, title, colors,pull=[]):
+    #labels = ['Oxygen', 'Hydrogen', 'Carbon_Dioxide', 'Nitrogen']
+    #values = [4500, 2500, 1053, 500]
+    #if len(colors) == 0:
+    #    colors = ['gold', 'mediumturquoise', 'darkorange', 'lightgreen','blue']
+
+    fig = go.Figure(data=[go.Pie(labels=labels, values=values, hole=0, pull=pull)],
                     layout=go.Layout(
                         title= {
-                            'text': "Histogram Distribution Plot",
+                            'text': title,
                             'x': 0.5,
                             'y': 0.98,
                             'xanchor': 'center',
@@ -92,15 +138,15 @@ def createGoPieChart():
                     )
                     )
     fig.update_traces(hoverinfo='label+percent', textinfo='value', textfont_size=14,
-                      marker=dict(colors=colors, line=dict(color='#000000', width=0)))
-    fig.update(layout_title_text='Sample Pie Chart',
+                      marker=dict( colors= colors, line=dict(color='#000000', width=0)))
+    fig.update(layout_title_text=title,
                layout_showlegend=True)
     return fig
 
 
 
 #********************************** Plotly Go Scatter Plot **********************************#
-def createGOScatterPlot():
+def createGOScatterPlot(x, y1,y2,y3 ):
     np.random.seed(1)
 
     N = 100
@@ -109,7 +155,7 @@ def createGOScatterPlot():
     random_y1 = np.random.randn(N)
     random_y2 = np.random.randn(N) - 5
     fig = go.Figure(
-                data=[go.Scatter(x=random_x, y=random_y0,
+                data=[go.Scatter(x=x, y=y1,
                             mode='markers',
                             name='markers',
                             opacity=0.75,
@@ -134,12 +180,14 @@ def createGOScatterPlot():
                 )
             )
     fig.update_layout(title='Population of USA States')
-    fig.add_trace(go.Scatter(x=random_x, y=random_y1,
+    '''
+    fig.add_trace(go.Scatter(x=x, y=y2,
                              mode='lines+markers',
                              name='lines+markers'))
-    fig.add_trace(go.Scatter(x=random_x, y=random_y2,
-                             mode='lines',
-                             name='lines'))
+    fig.add_trace(go.Scatter(x=x, y=y3, mode='lines', name='lines'))
+    '''
+
+
 
     return fig
 
@@ -261,7 +309,11 @@ def createGoViolinPlot():
 
 
 
-def createGoHistogramChart():
+
+
+
+
+def createGoBarChart(year, chem, title):
     month = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
              'August', 'September', 'October', 'November', 'December']
 
@@ -269,10 +321,64 @@ def createGoHistogramChart():
                  76.5, 76.6, 70.7, 60.6, 45.1, 29.3]
 
     fig= go.Figure(
-        data=[go.Bar(x=month,y=high_2000, marker=dict(color='#E232D1'), opacity=0.75)],
+        data=[go.Bar(x=year,y=chem, marker=dict(color='#E272D1'), opacity=0.75)],
         layout = go.Layout(
             title={
-                'text': "A sample go Plot",
+                'text': title,
+                'x': 0.3,
+                'y': 1,
+                'xanchor': 'center',
+                'yanchor': 'top'
+            },
+            titlefont={
+                'color': '#ffffff',
+                'size': 18
+            },
+            legend={
+                'orientation': 'h',
+                'bgcolor': '#1f2c56',
+                'xanchor': 'center', 'x': 0.5, 'y': -0.07
+            },
+            font=dict(
+                family="sans-serif",
+                size=12,
+                color='white'
+            ),
+            height=350,
+            width=325,
+            plot_bgcolor="#1A2E62",
+            paper_bgcolor="#1A2E62",
+            hovermode="closest",
+            margin=go.layout.Margin(l=15, r=15, b=5, t=45, pad=4),
+
+        )
+
+    )
+
+    return fig
+
+
+
+
+
+
+
+
+
+
+
+def createGoHistogramChart(year, chem, title):
+    month = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
+             'August', 'September', 'October', 'November', 'December']
+
+    high_2000 = [32.5, 37.6, 49.9, 53.0, 69.1, 75.4,
+                 76.5, 76.6, 70.7, 60.6, 45.1, 29.3]
+
+    fig= go.Figure(
+        data=[go.Bar(x=year,y=chem, marker=dict(color='#E272D1'), opacity=0.75)],
+        layout = go.Layout(
+            title={
+                'text': title,
                 'x': 0.3,
                 'y': 1,
                 'xanchor': 'center',

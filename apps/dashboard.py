@@ -1,5 +1,5 @@
 # freshwater health assessment Exploratory Data Analysis Page
-
+import pandas as pd
 from dash import dcc
 from dash import html
 import dash_bootstrap_components as dbc
@@ -8,6 +8,38 @@ import plotly.express as px
 import plotly.graph_objs as go_obj
 import plotly.graph_objects as go
 from visuals import charts
+import numpy as np
+
+
+# Read csv and add new column Year from the ACTIVITY_START_DATE
+df = pd.read_csv('./datasets/data.csv')
+df['ACTIVITY_START_DATE'] = pd.to_datetime(df['ACTIVITY_START_DATE'])
+df['Year'] = df['ACTIVITY_START_DATE'].dt.year
+
+# filter based on treatment
+fertilized = df[df['TREATMENT'] == 'fertilized']
+non_fertilized = df[df['TREATMENT'] == 'none (reference/control)']
+
+
+columns =[]
+for column in df.columns[6:len(df.columns) -1]:
+    columns.append(column)
+
+
+non_fertilized_year = non_fertilized
+y1 = non_fertilized_year['K']
+y2 = non_fertilized_year['MG']
+y3 = non_fertilized_year['CL']
+x = non_fertilized_year['Year']
+
+
+#average Chemical value by year
+year = np.array(non_fertilized['Year'].unique())
+avg_chem =  np.array(non_fertilized.groupby('Year')['PH'].mean())
+
+#site = non_fertilized.sort_values(by=['SITE'], ascending=[True])['SITE'].unique()
+site = non_fertilized['SITE']
+site_chem =  np.array(non_fertilized['PH'].value_counts(dropna=True))
 
 
 
@@ -48,13 +80,12 @@ fig1 = go.Figure(
 
 
     )
-
 )
 
 
 
 fig2 = go.Figure(
-    data = [go.Histogram(x=[5,4,3,2,5,6,3,5,3,4], y=[3,5,6,7,6,3,6,4,3,5])],
+    data = [go.Histogram(x=site, y=site_chem)],
     layout= go.Layout(
         barmode='stack',
         title= {
@@ -163,28 +194,50 @@ layout = html.Div([
                #               options=['smoker', 'day', 'time', 'sex'],
                #               value='day', clearable=False
                #               ),
-               #  html.P("Values:"),
-               #  dcc.Dropdown(id='values',
-               #               options=['total_bill', 'tip', 'size'],
-               #               value='total_bill', clearable=False
-               #               ),
-                dcc.Graph(id="graph1", figure=charts.createGoPieChart()),
+                 html.Div([
+                            dcc.Dropdown(id='treatment_type1',
+                              options=['Fertilized', 'Non-Fertilized'],
+                              value='Non-Fertilized', clearable=False
+                              ),
+                 ], style={'width':'100%'}),
+                html.Span("", style={'height': '15px'}),
+                dcc.Graph(id="graph1", )
 
-            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center'}),
+            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center',
+                                                               'flex-direction': 'column'}),
         ], className="col-4"),
         html.Div([
         #box 1
             html.Div([
               # html.P("Chart Title 1"),
-                dcc.Graph(id="graph2", figure=fig2),
-            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center'}),
+                html.Div([
+                        dcc.Dropdown(id='treatment_type2',
+                          options=['Fertilized', 'Non-Fertilized'],
+                          value='Non-Fertilized', clearable=False
+                          ),
+                ], style={'width':'100%'}),
+                html.Span("", style={'height': '15px'}),
+                dcc.Graph(id="graph2", figure=charts.createGoPieChart(values=site_chem, labels=site,
+                                                                      title="Results By Site",
+                                                                      colors=['gold', 'mediumturquoise', 'darkorange',
+                                                                              'lightgreen','blue'])),
+            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center',
+                                                               'flex-direction': 'column'}),
         ], className="col-4"),
         html.Div([
         #box 1
             html.Div([
                #html.P("Chart Title 1"),
-                dcc.Graph(id="graph3", figure=charts.createGoHistogramChart()),
-            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center'}),
+                html.Div([
+                    dcc.Dropdown(id='chemical_type3',
+                      options=columns,
+                      value=columns[0], clearable=False
+                      ),
+                 ], style={'width':'100%'}),
+                html.Span("", style={'height': '15px'}),
+                dcc.Graph(id="graph3", figure=charts.createGoHistogramChart(year=year, chem=avg_chem, title="Average Result By Year")),
+            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center',
+                                                               'flex-direction': 'column'}),
         ], className="col-4"),
 
     ], className="row"),
@@ -195,7 +248,7 @@ layout = html.Div([
             #box 1
             html.Div([
                #html.P("Chart Title 5"),
-                dcc.Graph(id="graph5", figure=charts.createGOScatterPlot()),
+                dcc.Graph(id="graph5", figure=charts.createGOScatterPlot(x, y1,y2,y3)),
             ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center', 'background-color': 'white'}),
         ], className="col-8"),
 
@@ -290,16 +343,25 @@ layout = html.Div([
 
 ], className="dashboardPage")
 
-#
-# @app.callback(
-#     Output("graph1","figure"),
-#     Input("names", "value"),
-#     Input("values", "value"),
-# )
-# def generate_chart(names,values):
-#     #print('callback fired')
-#     df2 = df.tips()  # replace with your own data source
-#     #print(df2)
-#     fig =  px.pie(df2, values=values, names=names, hole=.3)
-#     return fig
+
+@app.callback(
+     Output("graph1","figure"),
+     Input("treatment_type1", "value")
+ )
+def generate_chart(values):
+    #print('callback fired')
+    #print(values)
+    research_count=[]
+    water_type = []
+    if values == 'Non-Fertilized':
+        research_count = np.array(non_fertilized['ACTIVITY_MEDIA_NAME'].value_counts())
+        water_type = np.array(non_fertilized['ACTIVITY_MEDIA_NAME'].unique())
+    elif values == 'Fertilized':
+        research_count = np.array(fertilized['ACTIVITY_MEDIA_NAME'].value_counts())
+        water_type = np.array(fertilized['ACTIVITY_MEDIA_NAME'].unique())
+
+    fig = charts.createGoPieChart(values=research_count, labels=water_type,
+                                  title="Results For " + values + " Water", colors=[], pull=[0.2, 0, 0.0, 0])
+    #fig.show()
+    return fig
 
