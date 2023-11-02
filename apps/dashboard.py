@@ -9,12 +9,16 @@ import plotly.graph_objs as go_obj
 import plotly.graph_objects as go
 from visuals import charts
 import numpy as np
-
+graph_style ={"flex":1, "min-width":700}
 
 # Read csv and add new column Year from the ACTIVITY_START_DATE
 df = pd.read_csv('./datasets/data.csv')
 df['ACTIVITY_START_DATE'] = pd.to_datetime(df['ACTIVITY_START_DATE'])
 df['Year'] = df['ACTIVITY_START_DATE'].dt.year
+df['Month'] = df['ACTIVITY_START_DATE'].dt.month
+df['Day'] = df['ACTIVITY_START_DATE'].dt.day
+
+
 
 # filter based on treatment
 fertilized = df[df['TREATMENT'] == 'fertilized']
@@ -22,15 +26,24 @@ non_fertilized = df[df['TREATMENT'] == 'none (reference/control)']
 
 
 columns =[]
-for column in df.columns[6:len(df.columns) -1]:
+for column in df.columns[6:len(df.columns) -2]:
     columns.append(column)
 
 
-non_fertilized_year = non_fertilized
-y1 = non_fertilized_year['K']
-y2 = non_fertilized_year['MG']
-y3 = non_fertilized_year['CL']
-x = non_fertilized_year['Year']
+year = df.sort_values(by=['Year'], ascending=[True])['Year'].unique()
+month = df.sort_values(by=['Month'], ascending=[True])['Month'].unique()
+first = str(year[0]) + "-" + str(year[len(year)-1])
+years = []
+years.append(first)
+for x in year:
+    years.append(x)
+
+months =[]
+months.append('All Months')
+for x in month:
+    months.append(x)
+
+
 
 
 #average Chemical value by year
@@ -41,11 +54,25 @@ avg_chem =  np.array(non_fertilized.groupby('Year')['PH'].mean())
 site = non_fertilized['SITE']
 site_chem =  np.array(non_fertilized['PH'].value_counts(dropna=True))
 
+dataF = df[df['Year']== 2015]
+chemValue1 = 'PH'
+chemValue2 = 'ALK'
+bin=10
+
+
+
+
+
+
+
+
 
 
 from app import app
 df = px.data
 #print(df)
+
+
 
 fig1 = go.Figure(
     data = [go.Bar(x=[1,4,3,2,5,6,3,5,6,7], y=[3,5,6,7,6,8,1,5,6,8])],
@@ -159,17 +186,17 @@ layout = html.Div([
     html.Div([
         html.Div([
             html.P("Freshwater Health Assessment Dashboard", className="heading"),
-            ], className="col-12 flex-display")
+            ], className="col-md-12 flex-display")
     ],className="row", style={'margin-top': '10px'}),
     #row2
     html.Div([
         html.Div([
             html.P("Exploratory Data Analysis", className="heading2")
-        ], className="col-9"),
+        ], className="col-md-9"),
         html.Div([
                 dcc.Link('Back Home', href='/home', className='sBtn topNav'),
                 dcc.Link('Prediction', href='/prediction', className='sBtn topNav')
-        ], className="col-3 topNavCol flex-display"),
+        ], className="col-md-3 topNavCol flex-display"),
 ], className="row flex-display"),
     #row 2
     html.Div([
@@ -178,34 +205,29 @@ layout = html.Div([
             dbc.Label("Data Source:", style={'width': '12%'}),
             dbc.Input(placeholder="select CSV", ),
             dbc.Button("Load CSV", style={'margin-left': '10px'})
-        ], className="col-9 flex-display" ),
+        ], className="col-md-9 flex-display" ),
 
     ], className="row", style={'margin': '20px 22px 10px 22px', 'border': '1px solid white',
                                'border-radius': '5px', 'padding': '15px'}),
 
     #row 4
     html.Div([
-        html.Div([
+html.Div([
         #box 1
             html.Div([
-               # html.P("Chart Title 1"),
-               #  html.P("Names: "),
-               #  dcc.Dropdown(id='names',
-               #               options=['smoker', 'day', 'time', 'sex'],
-               #               value='day', clearable=False
-               #               ),
-                 html.Div([
-                            dcc.Dropdown(id='treatment_type1',
-                              options=['Fertilized', 'Non-Fertilized'],
-                              value='Non-Fertilized', clearable=False
-                              ),
-                 ], style={'width':'100%'}),
+              # html.P("Chart Title 1"),
+                html.Div([
+                        dcc.Dropdown(id='treatment_type1',
+                          options=['Fertilized', 'Non-Fertilized'],
+                          value='Non-Fertilized', clearable=False
+                          ),
+                ], style={'width':'100%', 'height': '100%'}),
                 html.Span("", style={'height': '15px'}),
-                dcc.Graph(id="graph1", )
-
+                dcc.Graph(id="graph1",  responsive=True, style={'width':'100%'}),
             ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center',
                                                                'flex-direction': 'column'}),
-        ], className="col-4"),
+        ], className="col-md-4"),
+
         html.Div([
         #box 1
             html.Div([
@@ -217,28 +239,35 @@ layout = html.Div([
                           ),
                 ], style={'width':'100%'}),
                 html.Span("", style={'height': '15px'}),
-                dcc.Graph(id="graph2", figure=charts.createGoPieChart(values=site_chem, labels=site,
+                dcc.Graph(id="graph2",  responsive=True, figure=charts.createGoPieChart(values=site_chem, labels=site,
                                                                       title="Results By Site",
                                                                       colors=['gold', 'mediumturquoise', 'darkorange',
-                                                                              'lightgreen','blue'])),
+                                                                              'lightgreen','blue']),
+                                                                      style={'width':'100%'}),
             ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center',
                                                                'flex-direction': 'column'}),
-        ], className="col-4"),
+        ], className="col-md-4"),
         html.Div([
         #box 1
             html.Div([
-               #html.P("Chart Title 1"),
+
                 html.Div([
                     dcc.Dropdown(id='chemical_type3',
                       options=columns,
                       value=columns[0], clearable=False
                       ),
                  ], style={'width':'100%'}),
-                html.Span("", style={'height': '15px'}),
-                dcc.Graph(id="graph3", figure=charts.createGoHistogramChart(year=year, chem=avg_chem, title="Average Result By Year")),
+                html.Span("", style={'height': '5px'}),
+                html.P("FOR NON FERTILIZED"),
+                html.Span("", style={'height': '5px'}),
+                dcc.Graph(id="graph3",  responsive=True,
+                          figure=charts.createGoHistogramChart(year=year, chem=avg_chem,
+                                                               title="Average Result By Year",
+                                                               height=300),
+                          style={'width':'100%'}),
             ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center',
                                                                'flex-direction': 'column'}),
-        ], className="col-4"),
+        ], className="col-md-4"),
 
     ], className="row"),
 
@@ -248,37 +277,147 @@ layout = html.Div([
             #box 1
             html.Div([
                #html.P("Chart Title 5"),
-                dcc.Graph(id="graph5", figure=charts.createGOScatterPlot(x, y1,y2,y3)),
-            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center', 'background-color': 'white'}),
-        ], className="col-8"),
+
+                html.Div([
+                    html.Div([
+                        html.Div([
+                            dcc.Dropdown(
+                                id='treatment_type_5',
+                                options=['Fertilized', 'Non-Fertilized'],
+                                value='Non-Fertilized', clearable=False
+                            )
+                        ], className="col-md-4"),
+                        html.Div([
+                            dcc.Dropdown(
+                                id='year_5',
+                                options=years,
+                                value=years[0], clearable=False
+                            )
+                        ], className="col-md-4"),
+                        html.Div([
+                            dcc.Dropdown(
+                                id='month_5',
+                                options=months,
+                                value=months[0], clearable=False
+                            )
+                        ], className="col-md-4")
+                    ], className="row"),
+                ], className="container-fluid"),
+
+                html.Span("", style={'height': '10px'}),
+
+
+                html.Div([
+                    html.Div([
+                        html.Div([
+                            dcc.Dropdown(
+                                id='chem_5_1',
+                                options=columns,
+                                value=columns[0], clearable=False
+                            )
+                        ],className="col-md-4"),
+                        html.Div([
+                            dcc.Dropdown(
+                                id='chem_5_2',
+                                options=columns,
+                                value=columns[1], clearable=False
+                            )
+                        ], className="col-md-4"),
+                        html.Div([
+                            dcc.Dropdown(
+                                id='chem_5_3',
+                                options=columns,
+                                value=columns[6], clearable=False
+                            )
+                        ], className="col-md-4")
+                    ],className="row"),
+                ], className="container-fluid"),
+                html.Span("", style={'height': '15px'}),
+                dcc.Graph(id="graph5", responsive=True, style={'width':'100%'} ),
+            ], className="card_container flex-display",
+                style={'align-items': 'center', 'justify-content': 'center', 'background-color': 'white',
+                       'flex-direction': 'column'}),
+        ], className="col-md-8"),
 
         html.Div([
             # box 2
             html.Div([
-                #html.P("Chart Title 6"),
-                dcc.Graph(id="graph6", figure=fig2),
-            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content':'center'}),
 
-        ], className="col-4"),
+                html.Div([
+                    dcc.Dropdown(id='chemical_type6',
+                      options=columns,
+                      value=columns[0], clearable=False
+                      ),
+                 ], style={'width':'100%'}),
+                html.Span("", style={'height': '15px'}),
+                html.P("FOR FERTILIZED"),
+                html.Span("", style={'height': '10px'}),
+                dcc.Graph(id="graph6",  responsive=True, style={'width':'100%'},
+                          figure=charts.createGoHistogramChart(year=year, chem=avg_chem,
+                                                               title="Average Result By Year",
+                                                               height=375 ),),
+            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content':'center',
+                                                               'flex-direction':'column'}),
+
+        ], className="col-md-4"),
     ], className="row"),
 
     # row 5
     html.Div([
-        html.Div([
-            # box 1
-            html.Div([
-                dcc.Graph(id="graph7", figure=charts.createGoViolinPlot()),
-            ], className="card_container", style={'backgroundColor': '#ffffff'}),
-        ], className="col-6"),
+
 
         html.Div([
             # box 2
             html.Div([
-                html.P("Chart Title 8"),
-                dcc.Graph(id="graph8", figure=fig1),
+
+                html.Div([
+                    html.Div([
+                        html.Div([
+                            dcc.Dropdown(
+                                id='color_7',
+                                options=['TREATMENT', 'SITE','ACTIVITY_MEDIA_NAME'],
+                                value='TREATMENT', clearable=False
+                            )
+                        ], className="col-md-4"),
+                        html.Div([
+                            dcc.Dropdown(
+                                id='chem_7_2',
+                                options=columns,
+                                value=columns[1], clearable=False
+                            )
+                        ], className="col-md-4"),
+                        html.Div([
+                            dcc.Dropdown(
+                                id='chem_7_3',
+                                options=columns,
+                                value=columns[6], clearable=False
+                            )
+                        ], className="col-md-4")
+                    ], className="row"),
+                ], className="container-fluid"),
+                html.Span("", style={'height': '15px'}),
+
+                dcc.Graph(id="graph7", responsive=True, style={'width':'100%'},
+                          figure=charts.createPxScatterPlot(dataFrame=dataF,
+                                                             x=chemValue1,
+                                                             y=chemValue2,
+                                                             color="TREATMENT",
+                                                             title="PH and ALK RESULTS FOR SITE")),
             ], className="card_container", style={'backgroundColor': '#ffffff'}),
 
-        ], className="col-6"),
+        ], className="col-md-12"),
+        html.Div([
+            # box 1
+            html.Div([
+                dcc.Graph(id="graph8",  responsive=True, style={'width':'100%'},  figure=charts.createGoViolinPlot()),
+            ], className="card_container", style={'backgroundColor': '#ffffff'}),
+        ], className="col-md-6"),
+        html.Div([
+            # box 1
+            html.Div([
+                dcc.Graph(id="graph9",  responsive=True, style={'width':'100%'},  figure=charts.createGoViolinPlot()),
+            ], className="card_container", style={'backgroundColor': '#ffffff'}),
+        ], className="col-md-6"),
     ], className="row"),
 
 
@@ -291,7 +430,7 @@ layout = html.Div([
                         html.P("*** Advance Exploratory Analysis ***"),
                         html.Div(id='advAnalysisBtn', children='Generate Analysis', className='sBtn primaryBtn',
                              style={'margin-left': '30px'})
-                    ], className="col-12 flex-display", style={'justify-content': 'space-between'}),
+                    ], className="col-md-12 flex-display", style={'justify-content': 'space-between'}),
 
                 ], className="row "),
 
@@ -303,19 +442,19 @@ layout = html.Div([
                         html.Div([
                             # box 1
                             html.Div([
-                                #html.P("Chart Title 7"),
-                                dcc.Graph(id="graph7", figure=charts.createGOLinePlot()),
+                                #html.P("Chart Title 10"),
+                                dcc.Graph(id="graph10", style={'width':'100%'}, figure=charts.createGOLinePlot()),
                             ], className="card_container", style={'backgroundColor': '#ffffff'}),
-                        ], className="col-6", ),
+                        ], className="col-md-6", ),
 
                         html.Div([
                             # box 2
                             html.Div([
-                                html.P("Chart Title 8"),
-                                dcc.Graph(id="graph8", figure=charts.createGoBoxPlot()),
+                                html.P("Chart Title 11"),
+                                dcc.Graph(id="graph8", style={'width':'100%'}, figure=charts.createGoBoxPlot()),
                             ], className="card_container", style={'backgroundColor': '#ffffff'}),
 
-                        ], className="col-6"),
+                        ], className="col-md-6"),
                     ], className="row"),
 
                     #row 2 advance char
@@ -324,10 +463,10 @@ layout = html.Div([
                             # box 2
                             html.Div([
                                 html.P("Chart Title 8"),
-                                dcc.Graph(id="graph8", figure=fig3),
+                                dcc.Graph(id="graph8", style={'width':'100%'}, figure=fig3),
                             ], className="card_container", style={'align-items': 'center', 'justify-content': 'center', 'background-color': 'white'}),
 
-                        ], className="col-12"),
+                        ], className="col-md-12"),
 
 
                     ], className="row")
@@ -335,7 +474,7 @@ layout = html.Div([
 
             ], className="card_container"),
 
-        ], className="col-12", style={'margin-top': '20px'}),
+        ], className="col-md-12", style={'margin-top': '20px'}),
 
 
 
@@ -365,3 +504,48 @@ def generate_chart(values):
     #fig.show()
     return fig
 
+
+
+# Line chart callback
+@app.callback(
+    Output("graph5", 'figure'),
+    Input("treatment_type_5",'value'),
+    Input("year_5",'value'),
+    Input("month_5", "value"),
+    Input("chem_5_1", "value"),
+    Input("chem_5_2", "value"),
+    Input("chem_5_3", "value")
+)
+def create_scatter(treatment_type, year, month, chem1, chem2, chem3):
+    table = df
+    mean_values = []
+    view='Year'
+    aggregate = True
+
+    if treatment_type == 'Non-Fertilized':
+        table = non_fertilized
+    elif treatment_type == 'Fertilized':
+        table= fertilized
+
+    if not year == first:
+        table = table[table['Year'] == year]
+        view='Month'
+        if not month == 'All Months':
+            table = table[table['Month'] == month]
+            view='Day'
+            aggregate = False
+
+    if aggregate:
+        mean_values = table.groupby(['Year', 'Month'])[['Year', 'Month', chem1, chem2, chem3]].mean()
+    else:
+        mean_values = table[['Year', 'Month', 'Day', chem1, chem2, chem3]]
+
+    title= "Results for 3 " + treatment_type + "Water Compositions Seen over " + str(year)
+    y1 = np.array(mean_values[chem1])
+    y2 = np.array(mean_values[chem2])
+    y3 = np.array(mean_values[chem3])
+
+    x = np.array(mean_values[view])
+
+    figure = charts.createGOScatterPlot(x, y1, y2, y3, name1=chem1, name2=chem2, name3=chem3, title=title)
+    return figure

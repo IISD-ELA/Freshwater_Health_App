@@ -3,6 +3,13 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objs as go_obj
 import plotly.graph_objects as go
+import seaborn as sns
+
+
+
+
+
+
 
 
 
@@ -146,22 +153,22 @@ def createGoPieChart(values, labels, title, colors,pull=[]):
 
 
 #********************************** Plotly Go Scatter Plot **********************************#
-def createGOScatterPlot(x, y1,y2,y3 ):
-    np.random.seed(1)
-
-    N = 100
-    random_x = np.linspace(0, 1, N)
-    random_y0 = np.random.randn(N) + 5
-    random_y1 = np.random.randn(N)
-    random_y2 = np.random.randn(N) - 5
+def createGOScatterPlot(x, y1,y2,y3 ,name1, name2, name3, title):
+    # np.random.seed(1)
+    #
+    # N = 100
+    # random_x = np.linspace(0, 1, N)
+    # random_y0 = np.random.randn(N) + 5
+    # random_y1 = np.random.randn(N)
+    # random_y2 = np.random.randn(N) - 5
     fig = go.Figure(
                 data=[go.Scatter(x=x, y=y1,
                             mode='markers',
-                            name='markers',
+                            name=name1,
                             opacity=0.75,
                             text="scatter plot",
                             textposition="top center",
-                            marker=dict(showscale=False,size=7, color='#acace6', line=dict(width=0.1), ),
+                            marker=dict(showscale=False,size=10, line=dict(width=0.1),  ),
                             textfont=dict(
                                 color="black",
                                 size=16,  # can change the size of font here
@@ -169,8 +176,8 @@ def createGOScatterPlot(x, y1,y2,y3 ):
                             ),
                 )],
                 layout=go.Layout(
-                            autosize=True,
-                            width=725,
+                            autosize=False,
+                            width=750,
                             height=350,
                             xaxis=go.layout.XAxis(linecolor="#d9d9d9", linewidth=0.5, mirror=False),
                             yaxis=go.layout.YAxis(linecolor="#d9d9d9", linewidth=0.5, mirror=False),
@@ -179,15 +186,18 @@ def createGOScatterPlot(x, y1,y2,y3 ):
                             # paper_bgcolor="#1A2E62",
                 )
             )
-    fig.update_layout(title='Population of USA States')
-    '''
+    fig.update_layout(title=title)
+
     fig.add_trace(go.Scatter(x=x, y=y2,
-                             mode='lines+markers',
-                             name='lines+markers'))
-    fig.add_trace(go.Scatter(x=x, y=y3, mode='lines', name='lines'))
-    '''
-
-
+                             mode='markers',
+                             name=name2,
+                             marker=dict(showscale=False,size=15, line=dict(width=0.1), ),
+                             opacity=0.75,
+                             ))
+    fig.add_trace(go.Scatter(x=x, y=y3, mode='markers', name=name3,
+                             marker=dict(showscale=False,size=7, line=dict(width=0.1),),
+                             opacity=0.95,
+                             ))
 
     return fig
 
@@ -367,7 +377,7 @@ def createGoBarChart(year, chem, title):
 
 
 
-def createGoHistogramChart(year, chem, title):
+def createGoHistogramChart(year, chem, title, height):
     month = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
              'August', 'September', 'October', 'November', 'December']
 
@@ -380,7 +390,7 @@ def createGoHistogramChart(year, chem, title):
             title={
                 'text': title,
                 'x': 0.3,
-                'y': 1,
+                'y': 0.97,
                 'xanchor': 'center',
                 'yanchor': 'top'
             },
@@ -398,8 +408,6 @@ def createGoHistogramChart(year, chem, title):
                 size=12,
                 color='white'
             ),
-            height=350,
-            width=325,
             plot_bgcolor="#1A2E62",
             paper_bgcolor="#1A2E62",
             hovermode="closest",
@@ -408,6 +416,7 @@ def createGoHistogramChart(year, chem, title):
         )
 
     )
+    fig.update_layout(height=350, width=325,)
 
     return fig
 
@@ -437,8 +446,8 @@ def createPxPieChart(data_frame,
                  custom_data, category_orders, labels, title, template, width, height,
                  opacity,hole)
     return fig
-def createPxScatterPlot(dataFrame, x, y, color):
-    fig = px.scatter(dataFrame, x=x, y=y, color=color)
+def createPxScatterPlot(dataFrame, x, y, color,title):
+    fig = px.scatter(dataFrame, x=x, y=y, opacity=0.75, color=color, width=850, height=450,title=title)
     #fig.show()
     #fig = go.Figure()
     return fig
