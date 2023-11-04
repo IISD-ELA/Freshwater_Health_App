@@ -13,8 +13,9 @@ layout = html.Div([
             html.P('A freshwater health assessment application is a digital '
                    'tool designed to evaluate and monitor the overall health '
                    'and quality of freshwater ecosystems such as lakes, rivers, '
-                   'and streams. This application utilizes various data sources, '
-                   'including water quality ', className="hero-desc", style={'color': 'white'}),
+                   'and streams. This application utilizes various data sets, '
+                   'in assessing water quality \n', className="hero-desc", style={'color': 'white'}),
+            html.Span(['(Dataset Source: IISD-ELA, 2023)'],className="hero-desc"),
             html.Div([
                 dcc.Link('View Dashboard', href='/dashboard', className='sBtn secondaryBtn', style={'margin-left': '10px'}),
 

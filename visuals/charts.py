@@ -233,7 +233,7 @@ fig3 = go.Figure(
 
 
 #********************************** Plotly Go Line Plot **********************************#
-def createGOLinePlot():
+def createGOLinePlot(x, y, name):
     month = ['January', 'February', 'March', 'April', 'May', 'June', 'July',
              'August', 'September', 'October', 'November', 'December']
     high_2000 = [32.5, 37.6, 49.9, 53.0, 69.1, 75.4, 76.5, 76.6, 70.7, 60.6, 45.1, 29.3]
@@ -243,7 +243,7 @@ def createGOLinePlot():
     high_2014 = [28.8, 28.5, 37.0, 56.8, 69.7, 79.7, 78.5, 77.8, 74.1, 62.6, 45.3, 39.9]
     low_2014 = [12.7, 14.3, 18.6, 35.5, 49.9, 58.0, 60.0, 58.6, 51.7, 45.2, 32.2, 29.1]
     fig = go.Figure(
-        data= [go.Scatter(x=month, y=high_2014, name='High 2014',
+        data= [go.Scatter(x=x, y=y, name=name,
                          line=dict(color='firebrick', width=0.5))],
         layout=go.Layout(
             autosize=True,
@@ -433,8 +433,9 @@ def createPxBarChart(dataFrame, x, y, height, width, color, labels, title, hover
 
 
 #********************************** Plotly Express Lint Plot **********************************#
-def createPxLinePlot(dataFrame, x, y, height, width, color, label, title):
-    fig = px.line(dataFrame, x=x, y=y, height=height, width=width, color=color, labels=label, title=title)
+def createPxLinePlot(dataFrame,x, y): # , height, width, color, label, title):
+
+    fig = px.line(dataFrame, x=x, y=y) #, height=height, width=width, color=color, labels=label, title=title)
     return fig
 
 

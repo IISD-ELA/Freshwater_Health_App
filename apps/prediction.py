@@ -26,6 +26,7 @@ layout = html.Div([
         ], className="col-9"),
         html.Div([
             dcc.Link('Back Home', href='/home', className='sBtn topNav'),
+            dcc.Link('Guidelines', href='/guidelines', className='sBtn topNav'),
             dcc.Link('Dashboard', href='/dashboard', className='sBtn topNav')
         ], className="col-3 topNavCol flex-display"),
     ], className="row flex-display"),
