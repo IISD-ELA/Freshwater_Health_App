@@ -28,6 +28,7 @@ min_max = MinMaxScaler(feature_range=(0.1, 1))
 data_scaled = pd.DataFrame(min_max.fit_transform(data_0), columns=data_0.columns)
 kmeans = KMeans(n_clusters=5, init='k-means++', random_state=2, n_init=10)
 data_0['clusters'] = kmeans.fit_predict(data_scaled)
+#data_0.to_csv('modelprediction.csv')
 
 # algorithm
 y = data_0['clusters']
@@ -57,7 +58,7 @@ def prediction(CHLA,ALK,TDP,TDN,K,MG,SRSI,MN,CL,FE,SO4,DOC,NO3,
 with open('model_2.pkl', 'wb') as file:
     pickle.dump(model, file)
 
-# Test the prediction
+# # Test the prediction
 # result = prediction(
 # CHLA=1.65,
 # ALK=18,

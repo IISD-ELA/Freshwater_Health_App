@@ -86,112 +86,6 @@ bin=10
 
 
 
-df = px.data
-#print(df)
-
-
-
-fig1 = go.Figure(
-    data = [go.Bar(x=[1,4,3,2,5,6,3,5,6,7], y=[3,5,6,7,6,8,1,5,6,8])],
-    layout= go.Layout(
-        title= {
-            'text': "Histogram Distribution Plot",
-            'x': 0.3,
-            'y': 0.95,
-            'xanchor': 'center',
-            'yanchor': 'top'
-            },
-        titlefont={
-            'color':'#54643e',
-            'size': 18
-        },
-        legend = {
-            'orientation': 'h',
-            'bgcolor': '#54f43e',
-            'xanchor': 'center', 'x': 0.5, 'y':-0.07
-        },
-        font= dict(
-            family="sans-serif",
-            size=12,
-            color='white'
-        ),
-        height=350,
-        width=525,
-        plot_bgcolor="#FFFFFF",
-        paper_bgcolor="#ffffff",
-        hovermode="closest",
-        margin=go.layout.Margin(l=15, r=15, b=15, t=15, pad=4),
-
-
-    )
-)
-
-
-
-fig2 = go.Figure(
-    data = [go.Histogram(x=site, y=site_chem)],
-    layout= go.Layout(
-        barmode='stack',
-        title= {
-            'text': "A sample go Plot",
-            'x': 0.3,
-            'y': 1,
-            'xanchor': 'center',
-            'yanchor': 'top'
-            },
-        titlefont={
-            'color':'#ffffff',
-            'size': 18
-        },
-        legend = {
-            'orientation': 'h',
-            'bgcolor': '#1f2c56',
-            'xanchor': 'center', 'x': 0.5, 'y':-0.07
-        },
-        font= dict(
-            family="sans-serif",
-            size=12,
-            color='white'
-        ),
-            height=350,
-            width=325,
-            plot_bgcolor="#1A2E62",
-            paper_bgcolor="#1A2E62",
-            hovermode="closest",
-            margin=go.layout.Margin(l=15, r=15, b=15, t=15, pad=4),
-
-
-    )
-
-)
-
-
-fig3 = go.Figure(
-    data = [go.Scatter(
-            x=df.tips().tail(300),  # x-coordinates of trace
-            y=df.tips().head(300),  # y-coordinates of trace
-            mode="markers +text ",  # scatter mode (more in UG section 1)
-            text="scatter plot",
-            opacity=1,
-            textposition="top center",
-            marker=dict(size=25, color='red', line=dict(width=0.5)),
-            textfont=dict(
-                color="black",
-                size=18,  # can change the size of font here
-                family="Times New Roman",
-            ),
-        )],
-   layout = go.Layout(
-    autosize=False,
-    width=725,
-    height=350,
-    xaxis=go.layout.XAxis(linecolor="black", linewidth=1, mirror=True),
-    yaxis=go.layout.YAxis(linecolor="black", linewidth=1, mirror=True),
-    margin=go.layout.Margin(l=50, r=50, b=15, t=20, pad=4),
-    #plot_bgcolor="#1A2E62",
-    #paper_bgcolor="#1A2E62",
-)
-)
 
 
 
@@ -451,79 +345,79 @@ html.Div([
             ], className="card_container", style={'backgroundColor': '#ffffff'}),
 
         ], className="col-md-12"),
-        html.Div([
-            # box 1
-            html.Div([
-                dcc.Graph(id="graph8_1",  responsive=True, style={'width':'100%'},  figure=charts.createGoViolinPlot()),
-            ], className="card_container", style={'backgroundColor': '#ffffff'}),
-        ], className="col-md-6"),
-        html.Div([
-            # box 1
-            html.Div([
-                dcc.Graph(id="graph9",  responsive=True, style={'width':'100%'},  figure=charts.createGoViolinPlot()),
-            ], className="card_container", style={'backgroundColor': '#ffffff'}),
-        ], className="col-md-6"),
+        # html.Div([
+        #     # box 1
+        #     html.Div([
+        #         dcc.Graph(id="graph8_1",  responsive=True, style={'width':'100%'},  figure=charts.createGoViolinPlot()),
+        #     ], className="card_container", style={'backgroundColor': '#ffffff'}),
+        # ], className="col-md-6"),
+        # html.Div([
+        #     # box 1
+        #     html.Div([
+        #         dcc.Graph(id="graph9",  responsive=True, style={'width':'100%'},  figure=charts.createGoViolinPlot()),
+        #     ], className="card_container", style={'backgroundColor': '#ffffff'}),
+        # ], className="col-md-6"),
     ], className="row"),
 
 
-    html.Div([
-        html.Div([
-            # box 2
-            html.Div([
-                html.Div([
-                    html.Div([
-                        html.P("*** Advance Exploratory Analysis ***"),
-                        html.Div(id='advAnalysisBtn', children='Generate Analysis', className='sBtn primaryBtn',
-                             style={'margin-left': '30px'})
-                    ], className="col-md-12 flex-display", style={'justify-content': 'space-between'}),
-
-                ], className="row "),
-
-                 #Advance chart
-                    #chats here
-
-                    # row 5
-                    html.Div([
-                        html.Div([
-                            # box 1
-                            html.Div([
-                                #html.P("Chart Title 10"),
-                                dcc.Graph(id="graph10", style={'width':'100%'}, figure=fig2),
-                            ], className="card_container", style={'backgroundColor': '#ffffff'}),
-                        ], className="col-md-6", ),
-
-                        html.Div([
-                            # box 2
-                            html.Div([
-                                html.P("Chart Title 11"),
-                                dcc.Graph(id="graph11", style={'width':'100%'}, figure=charts.createGoBoxPlot()),
-                            ], className="card_container", style={'backgroundColor': '#ffffff'}),
-
-                        ], className="col-md-6"),
-                    ], className="row"),
-
-                    #row 2 advance char
-                    html.Div([
-                        html.Div([
-                            # box 2
-                            html.Div([
-                                html.P("Chart Title 12"),
-                                dcc.Graph(id="graph12", style={'width':'100%'}, figure=fig3),
-                            ], className="card_container", style={'align-items': 'center', 'justify-content': 'center', 'background-color': 'white'}),
-
-                        ], className="col-md-12"),
-
-
-                    ], className="row")
-
-
-            ], className="card_container"),
-
-        ], className="col-md-12", style={'margin-top': '20px'}),
-
-
-
-    ], className="row"),
+    # html.Div([
+    #     html.Div([
+    #         # box 2
+    #         html.Div([
+    #             html.Div([
+    #                 html.Div([
+    #                     html.P("*** Advance Exploratory Analysis ***"),
+    #                     html.Div(id='advAnalysisBtn', children='Generate Analysis', className='sBtn primaryBtn',
+    #                          style={'margin-left': '30px'})
+    #                 ], className="col-md-12 flex-display", style={'justify-content': 'space-between'}),
+    #
+    #             ], className="row "),
+    #
+    #              #Advance chart
+    #                 #chats here
+    #
+    #                 # row 5
+    #                 html.Div([
+    #                     html.Div([
+    #                         # box 1
+    #                         html.Div([
+    #                             #html.P("Chart Title 10"),
+    #                             dcc.Graph(id="graph10", style={'width':'100%'}, figure=fig2),
+    #                         ], className="card_container", style={'backgroundColor': '#ffffff'}),
+    #                     ], className="col-md-6", ),
+    #
+    #                     html.Div([
+    #                         # box 2
+    #                         html.Div([
+    #                             html.P("Chart Title 11"),
+    #                             dcc.Graph(id="graph11", style={'width':'100%'}, figure=charts.createGoBoxPlot()),
+    #                         ], className="card_container", style={'backgroundColor': '#ffffff'}),
+    #
+    #                     ], className="col-md-6"),
+    #                 ], className="row"),
+    #
+    #                 #row 2 advance char
+    #                 html.Div([
+    #                     html.Div([
+    #                         # box 2
+    #                         html.Div([
+    #                             html.P("Chart Title 12"),
+    #                             dcc.Graph(id="graph12", style={'width':'100%'}, figure=fig3),
+    #                         ], className="card_container", style={'align-items': 'center', 'justify-content': 'center', 'background-color': 'white'}),
+    #
+    #                     ], className="col-md-12"),
+    #
+    #
+    #                 ], className="row")
+    #
+    #
+    #         ], className="card_container"),
+    #
+    #     ], className="col-md-12", style={'margin-top': '20px'}),
+    #
+    #
+    #
+    # ], className="row"),
 
 ], className="dashboardPage")
 

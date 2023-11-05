@@ -7,7 +7,9 @@ import seaborn as sns
 
 
 
-
+# for char template
+df = px.data
+#print(df)
 
 
 
@@ -389,7 +391,7 @@ def createGoHistogramChart(year, chem, title, height):
         layout = go.Layout(
             title={
                 'text': title,
-                'x': 0.3,
+                'x': 0.5,
                 'y': 0.97,
                 'xanchor': 'center',
                 'yanchor': 'top'
@@ -452,5 +454,119 @@ def createPxScatterPlot(dataFrame, x, y, color,title):
     #fig.show()
     #fig = go.Figure()
     return fig
+
+
+
+
+
+#Create Bar Chat template
+def createBarTemplate():
+    fig1 = go.Figure(
+        data = [go.Bar(x=[1,4,3,2,5,6,3,5,6,7], y=[3,5,6,7,6,8,1,5,6,8])],
+        layout= go.Layout(
+            title= {
+                'text': "Histogram Distribution Plot",
+                'x': 0.3,
+                'y': 0.95,
+                'xanchor': 'center',
+                'yanchor': 'top'
+                },
+            titlefont={
+                'color':'#54643e',
+                'size': 18
+            },
+            legend = {
+                'orientation': 'h',
+                'bgcolor': '#54f43e',
+                'xanchor': 'center', 'x': 0.5, 'y':-0.07
+            },
+            font= dict(
+                family="sans-serif",
+                size=12,
+                color='white'
+            ),
+            height=350,
+            width=525,
+            plot_bgcolor="#FFFFFF",
+            paper_bgcolor="#ffffff",
+            hovermode="closest",
+            margin=go.layout.Margin(l=15, r=15, b=15, t=15, pad=4),
+
+
+        )
+    )
+    return fig1
+
+
+#Create Histogram template
+def createHistogramTemplate(site, site_chem):
+    fig2 = go.Figure(
+        data = [go.Histogram(x=site, y=site_chem)],
+        layout= go.Layout(
+            barmode='stack',
+            title= {
+                'text': "A sample go Plot",
+                'x': 0.3,
+                'y': 1,
+                'xanchor': 'center',
+                'yanchor': 'top'
+                },
+            titlefont={
+                'color':'#ffffff',
+                'size': 18
+            },
+            legend = {
+                'orientation': 'h',
+                'bgcolor': '#1f2c56',
+                'xanchor': 'center', 'x': 0.5, 'y':-0.07
+            },
+            font= dict(
+                family="sans-serif",
+                size=12,
+                color='white'
+            ),
+                height=350,
+                width=325,
+                plot_bgcolor="#1A2E62",
+                paper_bgcolor="#1A2E62",
+                hovermode="closest",
+                margin=go.layout.Margin(l=15, r=15, b=15, t=15, pad=4),
+
+
+        )
+
+    )
+    return fig2
+
+
+#Create Scatter template
+def createScatterTemplate():
+    fig3 = go.Figure(
+        data = [go.Scatter(
+                x=df.tips().tail(300),  # x-coordinates of trace
+                y=df.tips().head(300),  # y-coordinates of trace
+                mode="markers +text ",  # scatter mode (more in UG section 1)
+                text="scatter plot",
+                opacity=1,
+                textposition="top center",
+                marker=dict(size=25, color='red', line=dict(width=0.5)),
+                textfont=dict(
+                    color="black",
+                    size=18,  # can change the size of font here
+                    family="Times New Roman",
+                ),
+            )],
+       layout = go.Layout(
+        autosize=False,
+        width=725,
+        height=350,
+        xaxis=go.layout.XAxis(linecolor="black", linewidth=1, mirror=True),
+        yaxis=go.layout.YAxis(linecolor="black", linewidth=1, mirror=True),
+        margin=go.layout.Margin(l=50, r=50, b=15, t=20, pad=4),
+        #plot_bgcolor="#1A2E62",
+        #paper_bgcolor="#1A2E62",
+    )
+    )
+    return fig3
 
 

@@ -343,6 +343,17 @@ html.Div([
 
                     ], className="row flex-display", style={'padding-top': '25px'}),
 
+html.Div([
+                html.P("*** Prediction Results ***"),
+                html.Div([
+                    html.H2(id="result2", children="Very Good")
+                ]),
+                html.Div([
+                    html.P(children="", id="error_text2", style={'color':'#ff0000','font-size':'16px', 'font-weight':'300'})
+                ]),
+            ], className="card_container", style={'color':'white','text-align':'center'}),
+
+
                     #form buttons
                     html.Div([
                         html.Div([
@@ -381,6 +392,8 @@ html.Div([
 @app.callback(
     Output("result", "children"),
     Output("error_text", "children"),
+    Output("result2", "children"),
+    Output("error_text2", "children"),
     Output("chla", "value"),
     Output("alk", "value"),
     Output("tdp", "value"),
@@ -439,10 +452,10 @@ def process_prediction(pred_n_clicks, clear_n_clicks, *input_values):
     ctx = dash.callback_context
     input_names =[]
     result_description ={
-        2: 'Very Healthy',
-        4: 'Healthy',
-        3: 'Somewhat healthy',
-        0: 'Not quite healthy',
+        4: 'Very Healthy',
+        2: 'Healthy',
+        0: 'Somewhat healthy',
+        3: 'Not Quite Healthy',
         1: 'Something is not right Based on the Data'
     }
 
@@ -475,9 +488,9 @@ def process_prediction(pred_n_clicks, clear_n_clicks, *input_values):
             #print(result[0])
     elif button_id == "clearBtn" and clear_n_clicks>0:
         #print("clear form fired")
-        return "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+        return "", "","","", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
 
-    return result, error, *input_values
+    return result, error, result, error, *input_values
 
 
 

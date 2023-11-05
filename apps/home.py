@@ -21,8 +21,8 @@ layout = html.Div([
 
                 dcc.Link('Predict Now', href='/prediction', className='sBtn primaryBtn', style={'margin-left': '30px'})
             ], className="row", style={'margin-top': '30px'})
-        ],className="col-6"),
+        ],className="col-md-6"),
 
-        html.Div(className="col-6")
+        html.Div(className="col-md-6")
     ], className="row")
 ], className="container homePage")
