@@ -14,6 +14,7 @@ with open('./mLModels/model_2.pkl', 'rb') as file:
     model = pickle.load(file)
 # to use the model
 
+# Concert the input parameter dictionary to a data frame
 def convert_to_dataset(input):
     data = {
         'CHLA': input['chla'],
@@ -77,7 +78,7 @@ layout = html.Div([
                    "details where required. The form is designed to make predictions based on "
                    "the provided information, so accuracy in data entry significantly impacts the results. ")
         ], className="container")
-    ], className="row", style={'margin': '20px 22px 10px 22px', 'border': '1px solid white', 'border-radius': '5px', 'padding': '15px'}),
+    ], className="row guideline-heading", style={}),
 
 #Form Row
     html.Div([
@@ -488,7 +489,8 @@ def process_prediction(pred_n_clicks, clear_n_clicks, *input_values):
             #print(result[0])
     elif button_id == "clearBtn" and clear_n_clicks>0:
         #print("clear form fired")
-        return "", "","","", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+        return ("", "","","", "", "", "", "", "", "", "", "", "", "", "",
+                "", "", "", "", "", "", "", "", "", "", "", "", "", "")
 
     return result, error, result, error, *input_values
 

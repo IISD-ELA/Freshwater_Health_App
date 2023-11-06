@@ -39,8 +39,7 @@ layout = html.Div([
             html.H5("*** Guidelines ***"),
             html.P("Explanation and application of this guidelines given here... ")
         ], className="container")
-    ], className="row", style={'margin': '20px 22px 10px 22px', 'border': '1px solid white',
-                               'border-radius': '5px', 'padding': '15px'}),
+    ], className="row guidelines", style={}),
 
 #Form Row
     html.Div([

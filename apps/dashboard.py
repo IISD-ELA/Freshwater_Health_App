@@ -77,23 +77,10 @@ chemValue1 = 'PH'
 chemValue2 = 'ALK'
 bin=10
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+# Dashboard layout starts here
 
 layout = html.Div([
-    #row 1
+    # row 1
     html.Div([
         html.Div([
             html.P("Freshwater Health Assessment Dashboard", className="heading"),
@@ -115,12 +102,12 @@ layout = html.Div([
         #container Column
         html.Div([
             dbc.Label("Data Source:", style={'width': '12%'}),
-            dbc.Input(placeholder="select CSV", ),
+            dbc.Input(placeholder="select CSV [ * This module is not functional yet its just a proof of concept ]",
+                      style={'font-size': '16px'}),
             dbc.Button("Load CSV", style={'margin-left': '10px'})
         ], className="col-md-9 flex-display" ),
 
-    ], className="row", style={'margin': '20px 22px 10px 22px', 'border': '1px solid white',
-                               'border-radius': '5px', 'padding': '15px'}),
+    ], className="row loadcsv"),
 
     #row 4
     html.Div([
@@ -136,8 +123,7 @@ html.Div([
                 ], style={'width':'100%', 'height': '100%'}),
                 html.Span("", style={'height': '15px'}),
                 dcc.Graph(id="graph1",  responsive=True, style={'width':'100%','height': '350px'}),
-            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center',
-                                                               'flex-direction': 'column'}),
+            ], className="card_container flex-display topChart", style={}),
         ], className="col-md-4"),
 
         html.Div([
@@ -152,8 +138,7 @@ html.Div([
                 ], style={'width':'100%'}),
                 html.Span("", style={'height': '15px'}),
                 dcc.Graph(id="graph2",  responsive=True, style={'width':'100%', 'height': '350px'} ),
-            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center',
-                                                               'flex-direction': 'column'}),
+            ], className="card_container flex-display topChart", style={}),
         ], className="col-md-4"),
         html.Div([
         #box 1
@@ -170,8 +155,7 @@ html.Div([
                 html.Span("", style={'height': '5px'}),
                 dcc.Graph(id="graph3",  responsive=True,
                           style={'width':'100%', 'height': '330px'}),
-            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content': 'center',
-                                                               'flex-direction': 'column'}),
+            ], className="card_container flex-display topChart", style={}),
         ], className="col-md-4"),
 
     ], className="row"),
@@ -238,10 +222,9 @@ html.Div([
                     ],className="row"),
                 ], className="container-fluid"),
                 html.Span("", style={'height': '15px'}),
-                dcc.Graph(id="graph5", responsive=True, style={'width':'100%'} ),
-            ], className="card_container flex-display",
-                style={'align-items': 'center', 'justify-content': 'center', 'background-color': 'white',
-                       'flex-direction': 'column'}),
+                dcc.Graph(id="graph5", responsive=True, style={'width': '100%', 'height': '450px'}),
+            ], className="card_container flex-display full-length",
+                style={'background-color': 'white'}),
         ], className="col-md-8"),
 
         html.Div([
@@ -258,8 +241,7 @@ html.Div([
                 html.P("FOR FERTILIZED"),
                 html.Span("", style={'height': '10px'}),
                 dcc.Graph(id="graph6",  responsive=True, style={'width':'100%'})
-            ], className="card_container flex-display", style={'align-items': 'center', 'justify-content':'center',
-                                                               'flex-direction':'column'}),
+            ], className="card_container flex-display topChart", style={}),
 
         ], className="col-md-4"),
     ], className="row"),
@@ -348,7 +330,8 @@ html.Div([
         # html.Div([
         #     # box 1
         #     html.Div([
-        #         dcc.Graph(id="graph8_1",  responsive=True, style={'width':'100%'},  figure=charts.createGoViolinPlot()),
+        #         dcc.Graph(id="graph8_1",  responsive=True, style={'width':'100%'},
+        #                   figure=charts.createGoViolinPlot()),
         #     ], className="card_container", style={'backgroundColor': '#ffffff'}),
         # ], className="col-md-6"),
         # html.Div([

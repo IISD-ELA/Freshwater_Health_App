@@ -48,6 +48,12 @@ body {
   font-size: large;
 }
 
+.loadcsv {
+margin: 20px 22px 10px 22px;
+border: 1px solid white;
+border-radius: 5px;
+padding: 15px;
+}
 
 
 .dashTopRow{
@@ -117,6 +123,27 @@ text-decoration: none;
   box-shadow: 2px 2px 2px #1f2c56;
 
 }
+
+.topChart{
+  align-items: center;
+ justify-content : center;
+ flex-direction: column;
+}
+
+.full-length{
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  flex-direction: column;
+}
+
+.guideline-heading{
+  margin: 20px 22px 10px 22px;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 15px;
+}
+
 
 .dcc_compon {
   margin: 0;
