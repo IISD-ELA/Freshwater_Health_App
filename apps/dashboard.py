@@ -11,7 +11,7 @@ from visuals import charts
 import numpy as np
 from app import app
 
-graph_style ={"flex":1, "min-width":700}
+graph_style = {"flex": 1, "min-width": 700}
 
 # Read csv and add new column Year from the ACTIVITY_START_DATE
 df = pd.read_csv('./datasets/data.csv')
